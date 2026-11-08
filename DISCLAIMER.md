@@ -14,7 +14,7 @@
 
 > **以下为原文引用，内容来自社区报告，我未做独立验证：**
 >
-> 我们注意到，在运行 NullMoth 的 Nvdia 显卡驱动的设备上，有用户报告概率存在从硬件上
+> 我们注意到，在运行 NullMoth 的 Nvdia 显卡驱动的设备上，有用户报告存在一定概率从硬件上
 > 物理损坏显卡，报告者集中在 30-50 系产品，初步推测是 GPU Firmware（GSP）接管相关问题，
 > 建议谨慎使用此开源驱动，此项报告来自 10 月，不确定是否修复，我不对任何个人损失负责。
 
@@ -61,7 +61,7 @@ respective authors (see [DRIVERS.md](DRIVERS.md)). No accuracy or fitness is gua
 
 > **Quoted from a community report, not independently verified by me:**
 >
-> Users have reported possible **physical GPU damage** on devices running the NullMoth
+> Users have reported a **certain probability of physical GPU damage** on devices running the NullMoth
 > NVIDIA driver, mostly on 30–50 series cards. The suspected cause is GPU firmware (GSP)
 > takeover. Treat this open-source driver with caution. The report dates from October and
 > it is unknown whether it has been fixed. I accept no responsibility for any personal loss.
