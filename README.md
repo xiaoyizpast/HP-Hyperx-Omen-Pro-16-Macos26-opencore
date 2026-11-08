@@ -226,7 +226,7 @@ HP 的 DSDT 里 `_PSR` 读的是 `H2RA` 窗口（`0xFE700000 + 0x340`）的 `R40
 
 > 这是**本机型专用**的，换机型必须删掉，否则电池/电源状态会错乱。
 >
-> 该 SSDT 也单独发布为 [`ssdt-ac-v1.0.0`](https://github.com/xiaoyizpast/HP-Hyperx-Omen-Pro-16-Macos26-opencore/releases/tag/ssdt-ac-v1.0.0)，含完整安装说明。
+> 完整安装说明、编译好的 AML 与源码在 [`boards/8F06/SSDT-AC/`](boards/8F06/SSDT-AC/)。
 
 ### 8. SMBIOS 选 MacBookPro16,2 的原因
 
