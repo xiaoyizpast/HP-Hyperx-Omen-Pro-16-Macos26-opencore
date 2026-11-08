@@ -56,8 +56,8 @@ use it on other models.
    - Without it you only get a basic framebuffer, no Metal.
 5. Reboot.
 
-> Why every setting is the way it is: **[docs/BOOT-AND-CONFIG.md](docs/BOOT-AND-CONFIG.md)**.
-> Legal and security risks: **[RISKS.md](RISKS.md)**.
+> Sections 4–6 explain why the configuration looks like this, why the HP firmware behaves the way
+> it does, and the legal/security risks of publishing or using it.
 
 ---
 
@@ -118,7 +118,48 @@ use it on other models.
 
 ---
 
-## 4. Why this HP firmware is unusual
+## 4. Why OpenCore is configured this way
+
+**AMD kernel patches.** macOS assumes Intel. `Kernel → Patch` carries the
+[AMD Vanilla](https://github.com/AMD-OSX/AMD_Vanilla) set: CPUID fixes, `rdmsr` removal,
+CPUFAMILY spoofing, the non-monotonic-time panic workaround, the MTRR/PAT fix, and two
+IOPCIFamily fixes for AM5 PCIe enumeration. None of them are optional.
+
+**NVIDIA boot arguments.** There is no official driver for RTX 50 series.
+`nvfb=1 nvaccel=1 nvfbheads=4` enable the framebuffer and accelerator; `-nvkmsnosmooth`
+avoids mode-switch hangs; `nvrmacpibl=1` is what gives you backlight control; `gfxrst=4`
+prevents a panic caused by WhateverGreen's boot-screen copy; `amfi=0x80` and
+`amfi_get_out_of_my_way=0x1` are required because the driver is unsigned.
+`Kernel → Block` on `IONDRVFramebuffer` stops the firmware framebuffer from stealing
+display index 0.
+
+**Booter quirks — deliberately *not* what validators suggest.** Setting
+`DevirtualiseMmio` and `SetupVirtualMap` to `false` (as some validators advise) leaves
+boot.efi unable to place the kernel; the boot stops right after `EB|LOG:EXITBS:START` with
+no further output. Both must stay `true` on this board.
+
+**Two non-standard actions for the MT7925 card.** Wi-Fi: `MtkWlan` only provides an Ethernet
+front end on macOS 26.0 (the native menu needs 26.7.1/26.7.2), so the card appears as `en2`.
+Bluetooth: besides `MtkBt` + `BlueToolFixup`, two NVRAM keys are mandatory —
+`bluetoothExternalDongleFailed = <00>` and `bluetoothInternalControllerInfo` of **exactly
+14 bytes** — otherwise `bluetoothd` falls back to the UART placeholder.
+
+**I2C trackpad ordering.** VoodooI2CServices → VoodooGPIO → VoodooI2C → VoodooInput →
+VoodooI2CHID, plus `-vi2c-force-polling` because GPIO interrupts are unreliable here.
+
+**Audio comes from NMXAudio.** macOS 26 removed `AppleHDA`; playback is provided by
+NullMoth's `NMXAudio` (in `/Library/Extensions`, not in the EFI). That is why no AppleALC
+is shipped — it would not take over anyway.
+
+**AC state comes from a custom SSDT.** The DSDT's `_PSR` reads `R400` in the `H2RA` window
+(`0xFE700000+0x340`) which macOS reads as 0. `SSDT-AC` reads EC RAM `0x40` bit 0 instead
+and renames `_PSR→XPSR`, `_Q20→XQ20`. **Board-specific.**
+
+**SMBIOS choice.** `MacBookPro16,2` is the closest model macOS 26 still supports;
+`ProcessorType = 3841` keeps "About This Mac" sane. `MacBookPro16,4` left Bluetooth on UART,
+and `MacPro6,1` is rejected by macOS 26 (prohibited sign).
+
+## 5. Why this HP firmware is unusual
 
 HP's firmware hardcodes the boot entry as
 `Boot0000 = \EFI\Microsoft\Boot\bootmgfw.efi`, never scans `\EFI\BOOT\BOOTX64.EFI`,
@@ -147,7 +188,36 @@ which makes the machine boot straight into Windows again. Back up before changin
 
 ---
 
-## 5. Layout
+## 6. Publication risks
+
+**Licensing.** VoodooI2C is GPL-3.0 and BlueToolFixup (BrcmPatchRAM) is GPL-2.0, so shipping
+their binaries requires the corresponding source. SimpleHDA carries Apple's AppleHDA payload
+and must not be redistributed. The NullMoth driver bundles NVIDIA firmware and is not included
+here. This repo therefore keeps `Kexts/` empty and fetches everything from official releases.
+
+**Apple's terms.** Installing macOS on non-Apple hardware violates Apple's EULA. Apple has
+issued DMCA takedowns for repositories distributing macOS installers; EFI configurations are
+generally tolerated but not guaranteed. Do not upload Apple binaries, and avoid Apple branding.
+
+**Privacy.** SMBIOS identifiers are placeholders (`C02XXXXXXXXXX`, zeroed MLB/UUID, dummy ROM).
+Do not commit `config.plist.bak-*`, OpenCore logs or `SysReport/` — they contain real serials,
+NVRAM and ACPI tables. Users must generate their own SMBIOS with GenSMBIOS.
+
+**Security downgrade.** `csr-active-config 0x0A43`, `amfi=0x80` and `SecureBootModel Disabled`
+are required by the NVIDIA driver, but they disable SIP partly and bypass AMFI. Say so loudly.
+
+**Hardware and operational risk.** `SSDT-AC` depends on this board's EC layout; other BIOS
+revisions may differ. Taking over `bootmgfw.efi` can leave a machine unable to boot either OS
+if done wrong. Windows feature updates can restore the original loader.
+
+**Reputation and support.** State clearly which model was validated, add a disclaimer, and use
+an issue template asking for `ioreg`, `kmutil showloaded` and a boot log.
+
+Checklist before publishing: `Kexts/` empty · no config backups · no logs/SysReport ·
+placeholder SMBIOS · security downgrade documented · licences and credits linked ·
+your own MIT licence included · no Apple binaries and no NVIDIA driver.
+
+## 7. Layout
 
 ```
 boards/8F06/EFI/BOOT/BOOTx64.efi          OpenCore launcher
@@ -158,10 +228,8 @@ boards/8F06/EFI/OC/Drivers/               OpenRuntime / HfsPlus / OpenCanopy / R
 boards/8F06/EFI/OC/Resources/             OpenCanopy resources
 boards/8F06/EFI/OC/Kexts/                 Empty; populated by fetch-kexts.sh
 fetch-kexts.sh                Downloads all kexts from official releases
-docs/BOOT-AND-CONFIG.md       Per-setting rationale + HP boot analysis
 DRIVERS.md                    Driver list (version / source / license)
 STATUS.md                     Test results and verification commands
-RISKS.md                      Publication risk checklist
 LICENSES.md / LICENSE         Licensing
 boards/8F06/ACPI-SOURCES/                 SSDT-AC source
 tools/                        Clamshell script, brightness tools, Wi-Fi menu-bar app
@@ -169,12 +237,12 @@ tools/                        Clamshell script, brightness tools, Wi-Fi menu-bar
 
 ---
 
-## 6. Notes
+## 8. Notes
 
 - No third-party binaries are bundled (GPL and Apple copyright reasons); the script fetches
   them from the official releases.
 - All drivers belong to their respective authors — see [DRIVERS.md](DRIVERS.md).
-- Use at your own risk; read [RISKS.md](RISKS.md) first.
+- Use at your own risk; read sections 4–6 above first.
 
 ## Credits
 
