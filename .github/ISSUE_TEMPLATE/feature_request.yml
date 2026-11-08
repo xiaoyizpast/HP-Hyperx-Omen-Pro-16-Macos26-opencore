@@ -1,0 +1,32 @@
+name: 💡 功能建议
+description: 建议新增驱动、脚本或文档
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 建议类型
+      options:
+        - 驱动 / 设备支持
+        - 脚本 / 工具
+        - 文档补充
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: desc
+    attributes:
+      label: 想解决什么问题
+      description: 先描述问题，再描述你期望的方案
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 补充信息
+      description: 相关硬件 ID、参考链接、你已经尝试过的方案
+    validations:
+      required: false

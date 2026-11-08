@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 使用说明与踩坑记录
+    url: https://github.com/xiaoyizpast/HP-Hyperx-Omen-Pro-16-Macos26-opencore#readme
+    about: 安装步骤、已知限制、23 条踩坑记录都在这里
+  - name: ⚠️ 免责声明
+    url: https://github.com/xiaoyizpast/HP-Hyperx-Omen-Pro-16-Macos26-opencore/blob/main/DISCLAIMER.md
+    about: 内容来源、NVIDIA 驱动硬件风险与责任限制
