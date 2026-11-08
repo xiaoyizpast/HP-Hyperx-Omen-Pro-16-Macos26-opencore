@@ -12,6 +12,8 @@ use it on other models.
 
 ---
 
+> ⚠️ **Read first: [DISCLAIMER.md](DISCLAIMER.md)** — content sources, hardware risk warning for the NVIDIA driver, and limitation of liability.
+
 ## 1. What works
 
 | Feature | Status | Notes |
