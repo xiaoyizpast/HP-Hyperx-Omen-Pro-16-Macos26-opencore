@@ -1,5 +1,7 @@
 # Zfan —— HP HyperX OMEN PRO 16（8F06）风扇控制
 
+[English](README.en.md)
+
 **风扇控制已支持。** Zfan 是本仓库配套的 macOS 风扇/性能控制 App，通过 EC（PMIO）直接控制这把机器的两个风扇。
 
 | 项目 | 说明 |
