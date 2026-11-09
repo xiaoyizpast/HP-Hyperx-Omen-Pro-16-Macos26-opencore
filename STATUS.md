@@ -9,7 +9,7 @@ macOS 26.0 (25A354) · OpenCore 1.0.9 · NullMoth 2.8.1
 | 显卡 Metal 4 | ✅ | `system_profiler SPDisplaysDataType` 显示 Metal 4 |
 | 内屏 2560×1600@240 | ✅ | 正常 |
 | 外接屏 1080p@300 | ✅ | 正常（扩展模式） |
-| Wi-Fi MT7925 | ✅ | 连接成功，WPA2 四次握手完整，网关 2.5 ms |
+| Wi-Fi MT7925 | ✅ | 以太网前端 `en1` 联网正常（IP/默认路由/ping 通）；26.0 无原生 Wi-Fi 面板 |
 | 蓝牙 MT7925 | ✅ | `State: On`、`THIRD_PARTY_DONGLE`、可配对 |
 | 音频输出 | ✅ | 内置扬声器有声 |
 | 亮度调节 | ✅ | `AppleBacklightDisplay=3`，`NVRMBacklightHandler=1` |

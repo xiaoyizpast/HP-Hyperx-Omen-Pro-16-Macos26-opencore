@@ -187,7 +187,12 @@ EB|LOG:EXITBS:START] 2026-11-07T03:00:29
 ### 4. 无线网卡是 MT7925，所以有两个"非标准"动作
 
 **Wi-Fi**：`MtkWlan.kext` 在 macOS 26.0 上只提供**以太网前端**（原生 Wi-Fi 菜单要求 26.7.1/26.7.2），
-所以系统里会多一个 `en2`，需要用 `mtkwifi` 工具或附带的菜单栏 App 连接。
+系统里会多一个以太网接口（本机是 `en1`，取决于已有网卡数量），需要用 `mtkwifi` 工具或附带的菜单栏 App 连接。
+
+- 驱动 0.12.1，固件 `MtkFwVersion = ____000000-20260813113118`
+- 本机实测：`en1` 获取到 IP、成为默认路由、`ping 1.1.1.1` 正常
+- 原生 Wi-Fi 面板缺失属预期行为，已向作者提交记录：[WTLMtkWireless#6](https://github.com/watchthelight-labs/WTLMtkWireless/issues/6)
+- 新增的踩坑与文件获取方式见 [PITFALLS-2.md](PITFALLS-2.md)
 
 **蓝牙**：除了 `MtkBt.kext` + `BlueToolFixup.kext`，还必须在 NVRAM 里放**两个键**，
 否则 `bluetoothd` 会退回 UART 占位控制器：
