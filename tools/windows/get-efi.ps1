@@ -171,8 +171,8 @@ if (Confirm "是否现在把 OpenCore 添加到 UEFI 启动项并置顶？`n`n�
 }
 
 # --- 结束 ---
-$readme = Join-Path $efiSrc "..\..\README.md"
-$readme = Resolve-Path $readme -ErrorAction SilentlyContinue
+$readme = Join-Path $root.FullName "README.md"
+if (-not (Test-Path $readme)) { $readme = $null }
 $msg = "EFI 构建完成。`n`n下一步：`n1. 重启进入 BIOS，确认从 OpenCore 启动`n2. 用 U 盘安装 macOS`n3. 安装完成后，在 macOS 里运行 tools/macos/get-efi.sh 补全驱动`n`n注意：Windows 阶段只保证能启动和 USB 供网；Wi-Fi、蓝牙、音频、触控板等由 macOS 脚本补全。`n`n日志：$Log"
 if ($readme) { $msg += "`n`nREADME：$readme" }
 Info $msg "完成"
