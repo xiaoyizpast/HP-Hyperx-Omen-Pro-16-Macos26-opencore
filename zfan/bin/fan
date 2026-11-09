@@ -1,0 +1,9 @@
+#!/bin/bash
+# 风扇控制：fan [status|auto|30-100|max]
+case "${1:-status}" in
+  status|"") sysctl -n kern.ecfan ;;
+  auto)  sysctl kern.ecfan_set=auto >/dev/null; sleep 3; sysctl -n kern.ecfan ;;
+  max)   sysctl kern.ecfan_set=100  >/dev/null; sleep 3; sysctl -n kern.ecfan ;;
+  [0-9]*) sysctl kern.ecfan_set="$1" >/dev/null; sleep 3; sysctl -n kern.ecfan ;;
+  *) echo "用法: fan [status|auto|30-100|max]"; exit 1 ;;
+esac

@@ -1,5 +1,22 @@
 # 更新日志
 
+## v1.2.3（2026-11-10）
+
+### 新增
+
+- **Zfan 风扇控制（已支持）**：`zfan/`
+  - `zfan/README.md`：功能、安装、数据来源、安全说明
+  - `zfan/setup.sh`：一键补全运行环境（写 kext、装 App/CLI、自启、校验）
+  - `zfan/kext/`：`ECFanPMIO.kext` 及源码
+  - `zfan/bin/`：`fan`、`amd-epp`
+  - `zfan/src/main.swift`：App 源码
+- 根 `README.md` 顶部加入 **Zfan：风扇控制（已支持）** 段落
+
+### 更新
+
+- `PITFALLS-2.md`：说明风扇控制由 Zfan 提供
+- Release 附件同时包含 EFI 包与 Zfan 安装包
+
 ## v1.2.1（2026-11-10）
 
 - `tools/windows/get-efi.ps1` 改为 **PowerShell 7**（`#requires -version 7.0`）

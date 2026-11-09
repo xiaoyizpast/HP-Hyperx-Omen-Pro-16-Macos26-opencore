@@ -17,6 +17,25 @@
 >
 > ⛔ **CPU 功耗墙与频率上限在 macOS 下不可调整**：[说明](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整)
 
+
+## Zfan：风扇控制（已支持）
+
+本仓库配套 **Zfan** —— macOS 下的风扇手动控制 App，通过 EC 直接控制两个风扇：
+
+- 预设：安静 45% / 平衡 65% / 狂暴 100% / 自动
+- 手动温度曲线、EPP 五档、关闭 CPB、电池自动省电
+- 菜单栏常驻、总览折线图、设置自动保存
+
+一键补全运行环境：
+
+```bash
+sudo bash zfan/setup.sh
+```
+
+详见 [zfan/README.md](zfan/README.md)。
+
+---
+
 > 💬 **QQ 交流群：1109117425**（问题反馈、EFI 交流）
 
 > 🤝 **CPU 频率限制需要开发者协作**：Zfan 只做了读取与 EPP 调节，真正的频率上限需要 SMU mailbox 或 HP WMI 的实现经验。欢迎 @[watchthelight](https://github.com/watchthelight)（MT7925 驱动、MSR 调试经验）、@[MasonDye](https://github.com/MasonDye)（OmenXHub）、@[breadeding](https://github.com/breadeding)（OmenSuperHub）、@[JamesCJ60](https://github.com/JamesCJ60)（UXTU / SMU）、@[FlyGoat](https://github.com/FlyGoat)（RyzenAdj）一起补全。相关结论见 [PITFALLS-2.md](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整)。 —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
