@@ -1,4 +1,4 @@
-#requires -version 5.1
+#requires -version 7.0
 <#
   Zfan / Hackintosh-OMEN-8f06 - Windows EFI builder (minimal: boot + USB tethering)
   Every destructive step asks for confirmation. Any failure opens a prefilled GitHub issue.
@@ -38,7 +38,8 @@ function Fail($m) {
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
     if (-not (Confirm "需要管理员权限来挂载 EFI 分区。现在以管理员身份重新启动脚本？")) { exit 0 }
-    Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    $hostExe = (Get-Process -Id $PID).Path
+    Start-Process $hostExe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
     exit
 }
 
@@ -51,15 +52,13 @@ Info "开始硬件检查..." "步骤 1/4"
 try {
     $board = (Get-CimInstance Win32_BaseBoard).Product
     $cpu   = (Get-CimInstance Win32_Processor | Select-Object -First 1).Name
-    $gpu   = (Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join " | "
-    Log "board=$board cpu=$cpu gpu=$gpu"
+    Log "board=$board cpu=$cpu"
 } catch { Fail "无法读取硬件信息：$($_.Exception.Message)" }
 
 $okBoard = $board -match "8F06"
 $okCpu   = $cpu -match "9955HX"
-$okGpu   = $gpu -match "5060"
 
-$summary = "主板：$board`nCPU：$cpu`nGPU：$gpu`n`n匹配结果：`n  8F06: $okBoard`n  9955HX: $okCpu`n  RTX 5060: $okGpu"
+$summary = "主板：$board`nCPU：$cpu`n`n匹配结果：`n  8F06: $okBoard`n  9955HX: $okCpu"
 if (-not ($okBoard -and $okCpu)) {
     if (-not (Confirm "$summary`n`n硬件与目标机型不匹配。继续可能无法启动。仍要继续吗？")) { Fail "用户取消：硬件不匹配" }
 } else {
@@ -76,7 +75,7 @@ try {
     New-Item -ItemType Directory -Force -Path $Work | Out-Null
     $zip = Join-Path $Work $asset.name
     Log "download $($asset.browser_download_url)"
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip -UseBasicParsing
+    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip
     Expand-Archive -Path $zip -DestinationPath $Work -Force
 } catch { Fail "下载或解压 release 失败：$($_.Exception.Message)" }
 
@@ -109,7 +108,7 @@ try {
             $a = $r.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
             if (-not $a) { throw "$repo 没有 zip 附件" }
             $z = Join-Path $cache ($safe + ".zip")
-            Invoke-WebRequest -Uri $a.browser_download_url -OutFile $z -UseBasicParsing
+            Invoke-WebRequest -Uri $a.browser_download_url -OutFile $z
             Expand-Archive -Path $z -DestinationPath $dest -Force
         }
         $found = Get-ChildItem $dest -Recurse -Directory -Filter $k | Select-Object -First 1

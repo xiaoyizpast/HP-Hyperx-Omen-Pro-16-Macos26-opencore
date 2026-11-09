@@ -1,5 +1,12 @@
 # 更新日志
 
+## v1.2.1（2026-11-10）
+
+- `tools/windows/get-efi.ps1` 改为 **PowerShell 7**（`#requires -version 7.0`）
+  - 提权重启时复用当前宿主（`pwsh`），不再固定调用 `powershell.exe`
+  - 去掉 PowerShell 7 中已废弃的 `-UseBasicParsing`
+  - 硬件检查只保留主板 **8F06** 与 CPU **9955HX**，**不再检查显卡**
+
 ## v1.2.0（2026-11-10）
 
 ### 新增

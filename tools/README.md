@@ -2,8 +2,13 @@
 
 | 平台 | 脚本 | 作用 |
 |---|---|---|
-| Windows | `windows/get-efi.ps1` | 硬件检查 → 构建**最小 EFI**（能启动 + USB 供网）→ 写入 ESP → 调整启动项。每步有确认框，失败自动开 issue。 |
+| Windows | `windows/get-efi.ps1` | **PowerShell 7** 脚本。硬件检查（主板 8F06、CPU 9955HX，不含显卡）→ 构建**最小 EFI**（能启动 + USB 供网）→ 写入 ESP → 调整启动项。每步有确认框，失败自动开 issue。 |
 | macOS | `macos/get-efi.sh` | 下载最新 release → 备份并写入 EFI → **补全全部驱动** → 应用已验证的 boot-args / 蓝牙 NVRAM。每步有确认框，失败自动开 issue。 |
+
+## 运行环境
+
+- Windows 脚本需要 **PowerShell 7**（`pwsh.exe`），不支持 Windows PowerShell 5.1
+- macOS 脚本需要 macOS 自带 `bash` / `osascript` / `python3`
 
 ## 使用顺序
 
