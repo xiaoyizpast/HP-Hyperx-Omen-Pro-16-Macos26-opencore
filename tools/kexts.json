@@ -1,0 +1,21 @@
+{
+  "note": "repo = GitHub owner/name; the script downloads the latest release zip and copies the named .kext out of it.",
+  "minimal": ["Lilu.kext", "VirtualSMC.kext", "WhateverGreen.kext", "NVMeFix.kext", "USBToolBox.kext"],
+  "full": [
+    {"name": "Lilu.kext", "repo": "acidanthera/Lilu"},
+    {"name": "VirtualSMC.kext", "repo": "acidanthera/VirtualSMC"},
+    {"name": "SMCBatteryManager.kext", "repo": "acidanthera/VirtualSMC"},
+    {"name": "SMCLightSensor.kext", "repo": "acidanthera/VirtualSMC"},
+    {"name": "WhateverGreen.kext", "repo": "acidanthera/WhateverGreen"},
+    {"name": "AppleALC.kext", "repo": "acidanthera/AppleALC"},
+    {"name": "NVMeFix.kext", "repo": "acidanthera/NVMeFix"},
+    {"name": "RestrictEvents.kext", "repo": "acidanthera/RestrictEvents"},
+    {"name": "ECEnabler.kext", "repo": "1Revenger1/ECEnabler"},
+    {"name": "USBToolBox.kext", "repo": "USBToolBox/kext"},
+    {"name": "BlueToolFixup.kext", "repo": "acidanthera/BrcmPatchRAM"},
+    {"name": "VoodooI2C.kext", "repo": "VoodooI2C/VoodooI2C"},
+    {"name": "VoodooI2CHID.kext", "repo": "VoodooI2C/VoodooI2C"},
+    {"name": "MtkWlan.kext", "repo": "watchthelight-labs/WTLMtkWireless"},
+    {"name": "MtkBt.kext", "repo": "watchthelight-labs/WTLMtkBluetooth"}
+  ]
+}

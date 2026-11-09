@@ -13,7 +13,9 @@
 
 > ⚠️ **使用前必读：[DISCLAIMER.md](DISCLAIMER.md)**
 
-> 📌 **v1 之后的新踩坑与文件获取方式：[PITFALLS-2.md](PITFALLS-2.md)**（不含风扇控制） —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
+> 📌 **v1 之后的新踩坑与文件获取方式：[PITFALLS-2.md](PITFALLS-2.md)**（不含风扇控制）
+>
+> ⛔ **CPU 功耗墙与频率上限在 macOS 下不可调整**：[说明](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整) —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
 
 ## 一、当前实现情况
 

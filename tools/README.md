@@ -1,36 +1,28 @@
-# 附加工具（可选，非引导必需）
+# 获取 EFI 的两种方式
 
-这些是本机额外做的两套小工具，源码附上供参考，均可用 MIT 协议使用。
+| 平台 | 脚本 | 作用 |
+|---|---|---|
+| Windows | `windows/get-efi.ps1` | 硬件检查 → 构建**最小 EFI**（能启动 + USB 供网）→ 写入 ESP → 调整启动项。每步有确认框，失败自动开 issue。 |
+| macOS | `macos/get-efi.sh` | 下载最新 release → 备份并写入 EFI → **补全全部驱动** → 应用已验证的 boot-args / 蓝牙 NVRAM。每步有确认框，失败自动开 issue。 |
 
-## clamshell/ 合盖模式
+## 使用顺序
 
-- `clamshell-daemon.sh`：轮询合盖状态；接外接屏时 `pmset disablesleep 1`，
-  合盖把内屏背光设为 0，开盖恢复
-- `dbright.c`：读写显示器亮度（IOKit `IODisplaySetFloatParameter`）
-- `displays.c`：枚举在线显示器（`CGDisplayIsBuiltin` 区分内外屏）
-- `com.local.clamshell.plist`：LaunchDaemon，开机自启
+1. Windows 下运行 `get-efi.ps1`，得到可启动的 EFI 和安装环境
+2. 安装 macOS
+3. 进入 macOS 后运行 `get-efi.sh`，补全 Wi-Fi、蓝牙、音频、触控板等驱动
 
-编译：
+## 风险提示
 
-```bash
-clang -O2 -framework IOKit -framework CoreFoundation -o dbright dbright.c
-clang -O2 -framework CoreGraphics -o displays displays.c
-sudo cp com.local.clamshell.plist /Library/LaunchDaemons/
-sudo launchctl load -w /Library/LaunchDaemons/com.local.clamshell.plist
-```
+- 修改 EFI 可能导致**无法开机**
+- 使用前必须会：U 盘救援、挂载 ESP、回退 `config.plist`
+- 不保证不会损坏硬件
+- Windows 脚本只保证“能启动 + USB 供网”，其余功能由 macOS 脚本补全
 
-> 注意：`disablesleep` 会阻止系统睡眠。只在接外接屏、需要合盖继续运行时使用。
+## 失败处理
 
-## wifimenu/ Wi-Fi 菜单栏 App
+两个脚本在失败时都会：
 
-MT7925 在 macOS 26.0 上只有以太网前端，没有原生 Wi-Fi 菜单。
-`main.swift` 是一个菜单栏客户端：
+1. 弹出错误说明
+2. 打开 GitHub 新建 issue 页面，预填标题和日志路径
 
-- 菜单栏只显示图标
-- 展开时触发实时扫描（需要免密 sudo 白名单）
-- 已保存/开放网络免密连接，新网络弹密码框
-- 连上开放网络自动打开校园网门户
-
-编译与权限（sudoers 白名单）见源码顶部注释与 `DRIVERS.md`。
-
-> 已构建好的 App 与安装脚本单独打包为 `wifi-menu-share.zip`（含 `install.sh`）。
+也可以手动提交：https://github.com/xiaoyizpast/Hackintosh-OMEN-8f06/issues/new

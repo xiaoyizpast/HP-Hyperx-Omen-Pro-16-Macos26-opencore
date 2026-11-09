@@ -1,5 +1,29 @@
 # 更新日志
 
+## v1.2.0（2026-11-10）
+
+### 新增
+
+- `tools/windows/get-efi.ps1`：Windows 侧最小 EFI 构建
+  - 硬件检查（8F06 / 9955HX / RTX 5060）
+  - 下载最新 release、补最小 kext（Lilu、VirtualSMC、WhateverGreen、NVMeFix、USBToolBox）
+  - 挂载 ESP、备份现有 EFI、写入、调整 UEFI 启动项
+  - 每一步都有确认框，失败自动打开预填 issue
+  - 完成后弹出 README 指引
+- `tools/macos/get-efi.sh`：macOS 侧补全
+  - 下载最新 release、备份并写入 EFI
+  - 按 `tools/kexts.json` 补全全部驱动（含 MtkWlan / MtkBt）
+  - 写入已验证的 boot-args 与蓝牙 NVRAM 键
+  - 每步确认，失败自动开 issue
+  - 明确警告可能无法开机、需具备救援能力
+- `tools/kexts.json`：驱动清单（仓库 → kext 名）
+- `tools/README.md`：两份脚本的使用顺序与风险
+
+### 更新
+
+- `PITFALLS-2.md`：新增「CPU 功耗与频率限制不可调整」结论
+- `README.md`：顶部加入该结论链接与脚本入口
+
 ## v1.1.0（2026-11-10）
 
 文档与验证更新，不含风扇控制。
