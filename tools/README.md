@@ -8,6 +8,8 @@
 ## 运行环境
 
 - Windows 脚本需要 **PowerShell 7**（`pwsh.exe`），不支持 Windows PowerShell 5.1
+  - 若在 5.1 下运行，脚本会弹窗提示并打开[微软官方安装说明](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
+  - 安装：`winget install --id Microsoft.PowerShell --source winget`
 - macOS 脚本需要 macOS 自带 `bash` / `osascript` / `python3`
 
 ## 使用顺序

@@ -1,10 +1,17 @@
-#requires -version 7.0
 <#
   Zfan / Hackintosh-OMEN-8f06 - Windows EFI builder (minimal: boot + USB tethering)
   Every destructive step asks for confirmation. Any failure opens a prefilled GitHub issue.
 #>
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
+
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    [System.Windows.Forms.MessageBox]::Show(
+        "本脚本需要 PowerShell 7（pwsh.exe）。`n`n当前版本：$($PSVersionTable.PSVersion)`n`n点击确定将打开微软官方安装说明页面。",
+        "需要 PowerShell 7", "OK", "Warning") | Out-Null
+    Start-Process "https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows"
+    exit 1
+}
 
 $ErrorActionPreference = "Stop"
 $Repo   = "xiaoyizpast/Hackintosh-OMEN-8f06"

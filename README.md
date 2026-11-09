@@ -15,7 +15,11 @@
 
 > 📌 **v1 之后的新踩坑与文件获取方式：[PITFALLS-2.md](PITFALLS-2.md)**（不含风扇控制）
 >
-> ⛔ **CPU 功耗墙与频率上限在 macOS 下不可调整**：[说明](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整) —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
+> ⛔ **CPU 功耗墙与频率上限在 macOS 下不可调整**：[说明](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整)
+
+> 💬 **QQ 交流群：1109117425**（问题反馈、EFI 交流）
+
+> 🤝 **CPU 频率限制需要开发者协作**：Zfan 只做了读取与 EPP 调节，真正的频率上限需要 SMU mailbox 或 HP WMI 的实现经验。欢迎 @[watchthelight](https://github.com/watchthelight)（MT7925 驱动、MSR 调试经验）、@[MasonDye](https://github.com/MasonDye)（OmenXHub）、@[breadeding](https://github.com/breadeding)（OmenSuperHub）、@[JamesCJ60](https://github.com/JamesCJ60)（UXTU / SMU）、@[FlyGoat](https://github.com/FlyGoat)（RyzenAdj）一起补全。相关结论见 [PITFALLS-2.md](PITFALLS-2.md#0-cpu-功耗与频率限制不可调整)。 —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
 
 ## 一、当前实现情况
 
