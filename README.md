@@ -11,7 +11,9 @@
 
 ---
 
-> ⚠️ **使用前必读：[DISCLAIMER.md](DISCLAIMER.md)** —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
+> ⚠️ **使用前必读：[DISCLAIMER.md](DISCLAIMER.md)**
+
+> 📌 **v1 之后的新踩坑与文件获取方式：[PITFALLS-2.md](PITFALLS-2.md)**（不含风扇控制） —— 内容来源说明、NVIDIA 驱动硬件风险警告与责任限制。
 
 ## 一、当前实现情况
 
