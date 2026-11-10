@@ -156,8 +156,8 @@ static int cpufreq SYSCTL_HANDLER_ARGS
     UInt64 a1 = rdmsr64(0xE8);
     double ratio = (m1 > m0) ? (double)(a1 - a0) / (double)(m1 - m0) : 0.0;
     double mhz = ratio * 2500.0;
-    char out[48];
-    snprintf(out, sizeof(out), "%.0f", mhz);
+    static char out[48];
+    snprintf(out, sizeof(out), "%u", (unsigned)(mhz + 0.5));
     return sysctl_handle_string(oidp, out, sizeof(out), req);
 }
 
@@ -172,8 +172,9 @@ static int cpupower SYSCTL_HANDLER_ARGS
     UInt64 e1 = rdmsr64(0xC001029B);
     double joules = (double)(e1 - e0) / (double)(1u << unit);
     double watts = joules / 0.1;
-    char out[48];
-    snprintf(out, sizeof(out), "%.1f", watts);
+    static char out[48];
+    unsigned mw = (unsigned)(watts * 1000.0 + 0.5);
+    snprintf(out, sizeof(out), "%u.%03u", mw / 1000, mw % 1000);
     return sysctl_handle_string(oidp, out, sizeof(out), req);
 }
 
