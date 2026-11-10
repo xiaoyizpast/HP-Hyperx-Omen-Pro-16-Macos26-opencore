@@ -48,7 +48,7 @@ sudo bash zfan/setup.sh
 | 显卡 Metal | ✅ | NullMoth 2.8.1，Metal **4** |
 | 内屏 2560×1600@240 | ✅ | 正常 |
 | 外接屏 1080p@300 | ✅ | 扩展模式，可设为主屏 |
-| Wi-Fi MT7925 | ✅ | 需 `mtkwifi` 工具或附带菜单栏 App |
+| Wi-Fi MT7925 | ✅ | 26.7.2 原生前端（MtkWlanNative 0.4.15）；26.0 用 `mtkwifi` 或 WiFi Menu |
 | 蓝牙 MT7925 | ✅ | `State: On` / `THIRD_PARTY_DONGLE`，可配对 |
 | 音频输出 | ✅ | 内置扬声器、耳机 |
 | 亮度调节 | ✅ | 硬件背光（`nvrmacpibl=1`） |
