@@ -238,3 +238,57 @@ unzip -l VirtualSMC.zip | head
 ```
 
 kext 版本需与 OpenCore 配置中的 `MinKernel` / `MaxKernel` 匹配，避免加载失败。
+
+## 16. 内核 printf 不支持 `%f`
+
+`kern.cpufreq` / `kern.cpupower` 一直返回 `"f"`，根因不是缓冲区，而是**内核 `snprintf` 不支持浮点格式**：`"%.0f"` 只输出了格式串末尾的 `f`。
+
+修复：全部改成整数格式化。
+
+```c
+snprintf(out, sizeof(out), "%u", (unsigned)(mhz + 0.5));
+unsigned mw = (unsigned)(watts * 1000.0 + 0.5);
+snprintf(out, sizeof(out), "%u.%03u", mw / 1000, mw % 1000);
+```
+
+验证输出：`kern.cpufreq: 5038`、`kern.cpupower: 55.021`。
+
+## 17. 屏蔽 macOS 固件更新
+
+`PlatformInfo → Generic → MaxBIOSVersion = true` 会把 `BIOSVersion` 强制设为
+`9999.999.999.999.999`，系统不再推送或尝试刷写固件。
+
+验证：
+
+```bash
+system_profiler SPHardwareDataType | grep "System Firmware Version"
+# 9999.999.999.999.999
+```
+
+## 18. 26.7.2 升级与原生 Wi-Fi
+
+- 安装包：Apple 目录 `142-50020`（BUILD 25G332，18.4 GB）
+- 系统更新器 `softwareupdate --fetch-full-installer` 会假成功只生成 29 MB 空壳；
+  直接从目录下载 `InstallAssistant.pkg` 再 `installer -pkg` 才可靠
+- 空间不足时，把安装器 App 放大到独立 APFS 卷（`disk0s9`），不要动 APFS 容器前部空间
+- 原生 Wi-Fi 需要 **MtkWlanNative 0.4.15** + `mtkfe=native mtknativeif=1`
+- 26.7.2 上 `MtkWlanNative` 加载后 `system_profiler SPAirPortDataType` 显示
+  “Third-Party Wireless Card / MtkWlanNative 0.4.15”，`en1` 为 Wi-Fi 端口
+- 26.0 没有原生面板，用归档的 `wifi-menu/` 作为备选前端
+
+## 19. 手动安装 Command Line Tools
+
+`softwareupdate --download "Command Line Tools for Xcode-26.6"` 长时间无进度时，
+可以直接从 Apple 软件更新目录取包（产品 `140-17812`）：
+
+```bash
+BASE="https://swcdn.apple.com/content/downloads/33/19/140-17812-A_21ZLMMLY4E/zu3xwktttpoe71qiawhzgzvqss6rovawsa"
+curl -L -O "$BASE/CLTools_Executables_Universal.pkg"
+curl -L -O "$BASE/CLTools_macOS_SDK.pkg"
+curl -L -O "$BASE/CLTools_macOSNMOS_SDK.pkg"
+curl -L -O "$BASE/CLTools_SwiftBackDeploy.pkg"
+sudo installer -pkg CLTools_Executables_Universal.pkg -target /
+# 其余三个按同样顺序安装
+```
+
+装完 `xcode-select -p` 应指向 `/Library/Developer/CommandLineTools`。
