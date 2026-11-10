@@ -1,5 +1,20 @@
 # 更新日志
 
+## v1.2.5（2026-11-10）
+
+### 新增
+
+- 26.7.2（25G332）升级验证：NullMoth 2.8.1、Metal 4、ALC245、MtkWlanNative 0.4.15
+- 原生 Wi-Fi：MtkWlanNative + `mtkfe=native mtknativeif=1`
+- 屏蔽固件更新：`MaxBIOSVersion=true`
+- CPU 频率/功耗：修复内核 `%f` 问题，`kern.cpufreq` / `kern.cpupower` 正常
+- `PITFALLS-2.md` 新增第 16–19 节
+
+### 修复
+
+- `ECFanPMIO.kext` sysctl 浮点格式化
+- 26.0 的 WiFi Menu 归档为备选方案
+
 ## v1.2.3（2026-11-10）
 
 ### 新增
