@@ -9,7 +9,7 @@
 | BIOS WMI（PL1/PL2/PL4/TPP） | Windows 侧用 `hpqBIntM` 命令 `0x20008` / type `0x29`；macOS 没有 WMI 栈，内核求值 ACPI 会死锁 |
 | 写 P-State 表（MSR `0xC0010064`） | 改完 APG 频率不变（SMU 控制），且曾导致死机 |
 | EPP（`AMDRyzenCPMUPMUserClient` selector 24/25） | 只影响加速偏好，单核仍会到 5.5 GHz |
-| 关闭 CPB（MSR `0xC0010015`） | 能硬性封顶到基频（约 2.3–2.5 GHz），代价是性能大幅下降 |
+| 关闭 CPB（MSR `0xC0010015`） | 26.7.2 + 9955HX 实测**无效**：负载仍到 5144 MHz |
 | SMU mailbox | 未公开 Zen 5 偏移，风险极高 |
 
 因此本项目的定位是：**不提供功耗墙/频率上限功能**，只用风扇与 EPP 做温度管理。
@@ -151,7 +151,7 @@ SendOmenBiosWmi(0x29, new byte[] { 0xFF, 0xFF, 0xFF, value }, 0);
 
 实测 EPP 只影响加速偏好，单核仍会冲到 5.5 GHz。
 
-真正能封顶的只有 **关闭 CPB**（MSR `0xC0010015`），代价是掉到基频（约 2.3–2.5 GHz）。
+实测 **关闭 CPB** 也不能封顶（负载仍到 5144 MHz）；详见第 20 节。
 
 ---
 
@@ -187,7 +187,7 @@ RWEverything 的内核驱动未签名，在开启 HVCI / 驱动签名强制的 W
 | 读 GPU 功耗/频率 | 驱动不暴露，不可行 |
 | 设功耗墙 | BIOS WMI，macOS 无解 |
 | 精确限频 | SMU 控制，改 MSR 无效且危险 |
-| 硬性限频 | 关 CPB，锁基频 |
+| 硬性限频 | 暂无可靠方案（CPB 实测无效） |
 
 ---
 
@@ -292,3 +292,22 @@ sudo installer -pkg CLTools_Executables_Universal.pkg -target /
 ```
 
 装完 `xcode-select -p` 应指向 `/Library/Developer/CommandLineTools`。
+
+## 20. CPB / EPP 实测无法封顶
+
+在 26.7.2 + Ryzen 9 9955HX 上做负载测试（多核 `yes`）：
+
+| 设置 | 负载下最高频率 |
+|---|---|
+| EPP = 255（省电） | **5070 MHz** |
+| EPP = 128（平衡） | **4777 MHz** |
+| CPB off | **5144 MHz** |
+
+结论：
+
+- EPP 只影响 boost 偏好，不能封顶
+- `CPB off` 在这颗 Zen 5 上**没有封顶效果**（SMU 接管频率）
+- 想真正限制频率/功耗，只能走 **SMU mailbox**（RyzenAdj 的 STAPM/PPT 一类命令）
+  或 BIOS/Windows WMI 的 PL 设置；macOS 内核直接写 MSR 风险高且未验证
+
+因此本项目当前**不提供**频率上限功能，只提供 EPP 偏好与风扇控制。
