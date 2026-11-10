@@ -69,6 +69,29 @@ sudo bash zfan/setup.sh
 
 ---
 
+## 26.7.2 升级记录（2026-11-10）
+
+| 项 | 结果 |
+|---|---|
+| 系统 | macOS 26.7.2（25G332），Darwin 25.6.0 |
+| 显卡 | NullMoth 2.8.1，Metal 4 |
+| 原生 Wi-Fi | MtkWlanNative 0.4.15 + `mtkfe=native mtknativeif=1`，`en1` 为 Wi-Fi 端口 |
+| 固件更新 | `MaxBIOSVersion=true`，System Firmware 9999.999.999.999.999 |
+| CPU 频率/功耗 | `kern.cpufreq` / `kern.cpupower` 正常（约 5.0 GHz / 55 W） |
+| 音频 | ALC245 输出/输入正常 |
+
+升级后**仍需补全**的项目：
+
+| 项目 | 状态 | 说明 |
+|---|---|---|
+| H.264 硬解 | ❌ | NullMoth 仅支持 HEVC（`H264: false / HEVC: true`） |
+| GPU 功耗/频率 | ❌ | 驱动不暴露，只有利用率/显存 |
+| 键盘背光/RGB | ❌ | 无驱动，EC 寄存器未逆向 |
+| 指纹 / Thunderbolt | ❌ | 本机未检测到对应硬件 |
+| Wi-Fi 6GHz | ⚠️ | 驱动仅 2.4/5GHz |
+| HoRNDIS 开机加载 | ⚠️ | 手动 `kmutil load` 可用，开机注入后被内核拒绝 |
+| 内建麦克风 | ⚠️ | 设备存在，录音底噪偏大 |
+
 ## 二、安装步骤
 
 1. **备份你自己的 EFI**，再把本仓库的 `boards/8F06/EFI/` 覆盖到 EFI 分区。
