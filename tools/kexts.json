@@ -2,6 +2,7 @@
   "note": "repo = GitHub owner/name; the script downloads the latest release zip and copies the named .kext out of it.",
   "minimal": ["Lilu.kext", "VirtualSMC.kext", "WhateverGreen.kext", "NVMeFix.kext", "USBToolBox.kext"],
   "full": [
+    {"name": "MtkWlanNative.kext", "repo": "watchthelight-labs/WTLMtkWireless"},
     {"name": "Lilu.kext", "repo": "acidanthera/Lilu"},
     {"name": "VirtualSMC.kext", "repo": "acidanthera/VirtualSMC"},
     {"name": "SMCBatteryManager.kext", "repo": "acidanthera/VirtualSMC"},
