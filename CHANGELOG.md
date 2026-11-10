@@ -1,5 +1,18 @@
 # 更新日志
 
+## v1.2.6（2026-11-11）
+
+### 新增
+
+- README 中英文新增「26.7.2 升级记录」与「驱动补全清单」
+- macOS 获取脚本：26.7.1/26.7.2 自动安装 `MtkWlanNative.kext` 并追加 `mtkfe=native mtknativeif=1`
+- `tools/kexts.json` 加入 `MtkWlanNative.kext`
+- `zfan/kext` 更新为修复 sysctl 浮点的 `ECFanPMIO.kext`
+
+### 修复
+
+- `kern.cpufreq` / `kern.cpupower` 返回 `f`（内核 printf 不支持 `%f`）
+
 ## v1.2.5（2026-11-10）
 
 ### 新增
