@@ -56,6 +56,29 @@ See [zfan/README.en.md](zfan/README.en.md).
 | Fan control | ✅ | Zfan (`zfan/`) |
 | CPU power / frequency cap | ❌ | Not adjustable on macOS |
 
+## macOS 26.7.2 upgrade notes (2026-11-10)
+
+| Item | Result |
+|---|---|
+| OS | macOS 26.7.2 (25G332), Darwin 25.6.0 |
+| GPU | NullMoth 2.8.1, Metal 4 |
+| Native Wi-Fi | MtkWlanNative 0.4.15 + `mtkfe=native mtknativeif=1`, `en1` is the Wi-Fi port |
+| Firmware updates | `MaxBIOSVersion=true`, System Firmware 9999.999.999.999.999 |
+| CPU frequency / power | `kern.cpufreq` / `kern.cpupower` (about 5.0 GHz / 55 W) |
+| Audio | ALC245 output and input working |
+
+Still incomplete after the upgrade:
+
+| Item | Status | Notes |
+|---|---|---|
+| H.264 hardware decode | Missing | NullMoth supports HEVC only (`H264: false / HEVC: true`) |
+| GPU power / clocks | Missing | Not exposed by the driver |
+| Keyboard backlight / RGB | Missing | No driver, EC registers not reversed |
+| Fingerprint / Thunderbolt | Missing | No matching hardware detected |
+| Wi-Fi 6 GHz | Partial | Driver covers 2.4/5 GHz only |
+| HoRNDIS at boot | Partial | Manual `kmutil load` works; boot injection is rejected |
+| Internal microphone | Partial | Present but noisy |
+
 ## Getting the EFI
 
 Two scripts, one per platform:
