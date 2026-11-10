@@ -111,6 +111,10 @@ PY
 say "驱动已补全：\n$(ls "$KEXT_DIR" | tr '\n' ' ')"
 
 # 6. 已验证调整项
+VER=$(sw_vers -productVersion)
+MTK_NATIVE=""
+case "$VER" in 26.7.1|26.7.2) MTK_NATIVE="mtkfe=native mtknativeif=1";; esac
+export MTK_NATIVE
 ask "应用已验证的 boot-args 和蓝牙 NVRAM 设置？\n\n这会修改 config.plist 与 NVRAM。继续？" || exit 0
 python3 - "$VOL/EFI/OC/config.plist" <<'PY' || fail "修改 config.plist 失败"
 import plistlib, sys
@@ -119,6 +123,8 @@ d = plistlib.load(open(p, "rb"))
 args = ("debug=0x100 keepsyms=1 -amfipassbeta -vi2c-force-polling revpatch=sbvmm "
         "nvfb=1 nvaccel=1 nvfbheads=4 -nvkmsnosmooth amfi_get_out_of_my_way=0x1 amfi=0x80 "
         "ipc_control_port_options=0 gfxrst=4 nvrmacpibl=1 -amdcppcactive -amdpnopchk")
+if os.environ.get("MTK_NATIVE"):
+    args += " " + os.environ["MTK_NATIVE"]
 nv = d.setdefault("NVRAM", {}).setdefault("Add", {})
 guid = "7C436110-AB2A-4BBB-A880-FE41995C9F82"
 node = nv.setdefault(guid, {})
