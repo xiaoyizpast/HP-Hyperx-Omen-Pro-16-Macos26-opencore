@@ -5,6 +5,12 @@
 macOS 26.0 没有这张卡的原生 Wi-Fi 驱动，`MtkWlan` 驱动只提供「以太网前端」，
 系统设置里没有 Wi-Fi 面板。这个菜单栏 App 用 `mtkwifi` 工具把常用操作包起来。
 
+## 状态：26.0 的归档备选方案
+
+macOS 26.7.1（25G241）和 26.7.2（25G332）请使用官方的 [MtkWlanNative](https://github.com/watchthelight-labs/WTLWifiMenu)，本 App 不再需要。
+
+[English](README.en.md)
+
 ## 前提
 
 1. 已安装 `MtkWlan.kext`（本 App 不含驱动，见 [WTLMtkWireless](https://github.com/watchthelight-labs/WTLMtkWireless)）
