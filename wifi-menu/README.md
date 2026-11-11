@@ -61,6 +61,11 @@ ALL=(root) NOPASSWD: /usr/local/bin/mtkwifi scan --wait,
 - 不支持 WPA2-Enterprise（`MtkWlan` 驱动本身不支持）
 - 仅 x86_64、macOS 26
 
+## 版本说明
+
+`mtkwifi` 取自 `mt7925-wifi-bundle-0.12.1+0.4.16` 的 Recovery 目录，
+包含 8a4de8e 对 `mtkwifi add` 的修复。
+
 ## 许可证
 
 - 本 App（`main.swift`、`install.sh` 等）：MIT
