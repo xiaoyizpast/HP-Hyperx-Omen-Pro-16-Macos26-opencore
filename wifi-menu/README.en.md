@@ -63,6 +63,11 @@ appears in the command line.
 - No WPA2-Enterprise (`MtkWlan` itself does not support it)
 - x86_64 and macOS 26 only
 
+## Binary version
+
+The `mtkwifi` binary comes from the Recovery folder of
+`mt7925-wifi-bundle-0.12.1+0.4.16` and includes the 8a4de8e fix for `mtkwifi add`.
+
 ## License
 
 - This app (`main.swift`, `install.sh`, etc.): MIT
